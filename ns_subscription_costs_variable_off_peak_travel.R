@@ -99,10 +99,16 @@ free.anytime.sub = function(x) {
  # Create column names of the dataframe  
 colnames(df.costs) = c("day_number", 
                  "no_subscription",
-                 "fixed",
+                 "traject_vrij",
                  "40_pct_off",
                  "20_pct_40_pct_off",
                  "free_anytime")
+
+#First filter if the super expensive "traject_vrij" is worth to show
+if(free.anytime > 1.25*traject.fixed){
+  df.costs = df.costs %>% select(-free_anytime)
+}
+
 
 # Datafrome in long format
 df.costs.long = gather(df.costs,
@@ -110,7 +116,12 @@ df.costs.long = gather(df.costs,
                        value = "euro",
                        -day_number)
 
+
 # Plot the costs per #days you travel for each type of subscription 
+
+
+  
+# Pass filtered data to ggplot
 ggplot(df.costs.long)+
   geom_line(aes(x = day_number, y = euro, colour = subscription))+
   geom_vline(xintercept= days.i.travel, colour="grey") +
