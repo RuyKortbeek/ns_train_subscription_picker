@@ -15,7 +15,7 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                               textInput("journeyInput", "Enkele ritprijs (zonder korting)",
                                         value = ""),
                               br(),
-                              textInput("trajectfixedInput", "Prijs traject abonnement (via ns.nl",
+                              textInput("trajectfixedInput", "Prijs traject abonnement (via ns.nl)",
                                         value = "")
                               
                               
@@ -23,11 +23,14 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                  
                  
                  
-                 mainPanel(# Her comes all the stuff related to the results
+                 mainPanel(
+                   plotOutput("mainplot"),
+                   tableOutput("maintable")
                     
                )
                )
 )
+
 
 
 server = function(input, output) {
@@ -61,12 +64,47 @@ server = function(input, output) {
     })
   
   # Monthly costs of the "Traject abonnement" of the NS
-  traject.fixed = reactive({as.numeric(input$trajectfixedInput) 
-    })
   
   
+  # Monthly cost for each subscription
+  traject.fixed = reactive({as.numeric(input$trajectfixedInput)}) # this one the user has to give in the input form
+  no.subscrition = 0 # You anly pay the price for the fair
+  free.anytime = 351 # Traveller can travel throughout the Netherlands withoud additional costs
+  fourty.pct = (53/12) # Traveller gets 40% discount (off-peak hours) - costs of the subscription calculated per month
+  twenty.fourty.pct = 23 # Traveller gets 20%discounts during peak hours & 40% discount duing off-peak hours
   
   
+  #####################################
+  # Create dataframe of monthly costs #
+  #####################################
+  # input is fairs people made
+  df.costs = data.frame(cbind(as.vector(1:31)))
+  # Create column names of the dataframe  
+  colnames(df.costs) = c("day_number")
+  # Datafrome in long format
+  df.costs.long = gather(df.costs,
+                         key = "subscription",
+                         value = "euro",
+                         -day_number)
   
+  #First filter if the super expensive "traject_vrij" is worth to show 
+  reactive({
+  if(free.anytime > 1.25*traject.fixed()){
+    df.costs = df.costs %>% select(-free_anytime)
+  }
+  })
+  
+  #################
+  # plot the data #
+  #################
+  
+  output$mainplot <- renderPlot({
+    if (is.null(input$journeyInput)) {
+      return(NULL)
+    }})
+  
+  output$maintable <- renderTable({
+    df.costs
+  })
 }
 shinyApp(ui = ui, server = server)
