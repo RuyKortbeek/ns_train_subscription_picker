@@ -12,7 +12,7 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                               h6("Spitstijden: ma t/m vr 06:30-09:00 & 15:30-19:00)"),
                               uiOutput("offpeakOutput"),
                               br(),
-                              textInput("journeyInput", "Enkele ritprijs (zonder korting)",
+                              textInput("faircosts", "Enkele ritprijs (zonder korting)",
                                         value = ""),
                               br(),
                               textInput("trajectfixedInput", "Prijs traject abonnement (via ns.nl)",
@@ -60,7 +60,7 @@ server = function(input, output) {
     
   
   # Journey price: Replace a comma by a period in the price
-  price.single.journey = reactive({as.numeric(gsub(",", ".", input$journeyInput))
+  price.single.journey = reactive({as.numeric(gsub(",", ".", input$faircosts))
     })
   
   # Monthly costs of the "Traject abonnement" of the NS
@@ -78,33 +78,32 @@ server = function(input, output) {
   # Create dataframe of monthly costs #
   #####################################
   # input is fairs people made
-  df.costs = data.frame(cbind(as.vector(1:31)))
-  # Create column names of the dataframe  
-  colnames(df.costs) = c("day_number")
-  # Datafrome in long format
-  df.costs.long = gather(df.costs,
-                         key = "subscription",
-                         value = "euro",
-                         -day_number)
   
-  #First filter if the super expensive "traject_vrij" is worth to show 
-  reactive({
-  if(free.anytime > 1.25*traject.fixed()){
-    df.costs = df.costs %>% select(-free_anytime)
-  }
-  })
   
+  output$maintable = renderTable({
+ df = data.frame(cbind(as.vector(1:(as.numeric(input$traveldaysInput[])*2))),
+                 as.vector((1:((as.numeric(input$traveldaysInput[])*2)))*as.numeric(input$faircosts[])),
+                 as.vector(c((1:((as.numeric(input$traveldaysInput[])*2*(1-(as.numeric(input$offpeakInput[])/(as.numeric(input$traveldaysInput[])*2))))))*(as.numeric(input$faircosts[])),
+                             (1:((as.numeric(input$traveldaysInput[])*2*(as.numeric(input$offpeakInput[])/(as.numeric(input$traveldaysInput[])*2)))))*(as.numeric(input$faircosts[])*0.6)+
+                               ((as.numeric(input$traveldaysInput[])*2*(1-(as.numeric(input$offpeakInput[])/(as.numeric(input$traveldaysInput[])*2))))*(as.numeric(input$faircosts[]))))
+                 )
+                
+                
+                 )
+})
+  
+  
+
   #################
   # plot the data #
   #################
   
   output$mainplot <- renderPlot({
-    if (is.null(input$journeyInput)) {
+    if (is.null(input$faircosts)) {
       return(NULL)
     }})
   
-  output$maintable <- renderTable({
-    df.costs
-  })
+ 
+
 }
 shinyApp(ui = ui, server = server)
