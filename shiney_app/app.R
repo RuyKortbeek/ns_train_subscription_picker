@@ -15,7 +15,7 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                               uiOutput("offpeakOutput"),
                               br(),
                               textInput("faircostInput", "Enkele ritprijs (zonder korting)",
-                                        value = "10"),
+                                        value = "1"),
                               br(),
                               textInput("trajectfixedInput", "Prijs traject abonnement (via ns.nl)",
                                         value = "")
@@ -27,6 +27,7 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                  
                  mainPanel(
                    plotOutput("mainplot"),
+                   textOutput("bestoption"),
                    tableOutput("maintable")
                     
                )
@@ -39,7 +40,7 @@ server = function(input, output) {
   # Number of fairs that are travelled during off peak times 
   # Depends on the number of days the user used as an input
   output$offpeakOutput = renderUI({
-    sliderInput("offpeakInput", "Ritten buiten de Spitsuren",
+    sliderInput("offpeakInput", "",
                 min = 0, max = as.numeric(input$traveldaysInput)*2, 
                 value = 1, step = 1)
   })
@@ -48,6 +49,18 @@ server = function(input, output) {
   # Input variables depending on user input #
   ############################################
   
+  # Create a theme for the plot later on
+  
+  my.theme =
+    theme_bw()+
+    theme(text = element_text(),
+          title = element_text(size = 15, colour = "black"),
+          axis.text.x = element_text(size = 12, colour = "black"),
+          axis.text.y = element_text(size = 12, colour = "black"),
+          legend.title = element_text(size = 15, colour = "black"),
+          legend.text = element_text(size = 12),
+          legend.position = "left"
+    )
   # traveldaysInput
   # travelpeakInput
   # faircostInput
@@ -60,7 +73,7 @@ server = function(input, output) {
     
     
     df= data.frame(
-     dag =  c(1:(as.numeric(input$traveldaysInput)*2)),
+     rit =  c(1:(as.numeric(input$traveldaysInput)*2)),
     basis =  c(1:(as.numeric(input$traveldaysInput)*2)*as.numeric(input$faircostInput)),
     dal_voordeel = c(
      
@@ -90,14 +103,39 @@ server = function(input, output) {
     )
     
     
-  #   colnames(df) = c("dag", "kosten")
+    df.long = df %>% gather(.,
+                            key = "subscription",
+                            value = "euro",
+                            - rit)
     
-
-      print(reactiveVal(input$offpeakInput))
+    if((as.numeric(input$traveldaysInput)*2)*as.numeric(input$faircostInput)*1.5 < 351){
+      df.long = df.long %>% filter(subscription != "altijd_vrij")
+      
+    }
+    
+    
+  
+            
    
-     
+  output$mainplot = renderPlot({
+    ggplot(df.long, aes(x = 31)) +
+    geom_line(aes(x = rit/2, y = euro, colour = subscription))+
+      labs(title = "Opbouw van de maandelijkse kosten per abonnement",
+           x = "Dagen dat je reist",
+           y = "Totale kosten in Euro's")+
+      my.theme
+  })
+  
     
-    output$maintable = renderTable(df)
+    df.sub = df.long %>% filter(., rit == (as.numeric(input$traveldaysInput)*2)) %>%
+      arrange(euro)
+      
+    
+    output$maintable = renderTable(df.sub[,2:3])
+    
+    output$bestoption = renderText({
+      paste("Voordeligste abonnement:", df.sub[1,2])
+    })
     }
   })
   
