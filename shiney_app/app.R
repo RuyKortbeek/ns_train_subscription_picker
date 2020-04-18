@@ -41,8 +41,8 @@ server = function(input, output) {
   # Depends on the number of days the user used as an input
   output$offpeakOutput = renderUI({
     sliderInput("offpeakInput", "",
-                min = 0, max = as.numeric(input$traveldaysInput)*2, 
-                value = 1, step = 1)
+                min = 0, max = (as.numeric(input$traveldaysInput)*2), 
+                value = 1, step = 1, round = TRUE)
   })
   
   ############################################
@@ -75,31 +75,41 @@ server = function(input, output) {
     df= data.frame(
      rit =  c(1:(as.numeric(input$traveldaysInput)*2)),
     basis =  c(1:(as.numeric(input$traveldaysInput)*2)*as.numeric(input$faircostInput)),
-    dal_voordeel = c(
-     
-     c(1:((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*as.numeric(input$faircostInput)), # costs during peak
-     
-     
-      c(1:as.numeric(input$offpeakInput)*(as.numeric(input$faircostInput)*0.6) + ((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*as.numeric(input$faircostInput))  # cost during off peak + cost made during peak 
-    ) +5,
+    dal_voordeel = 
     
-    altijd_voordeel = c(
-      c(1:((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*(as.numeric(input$faircostInput)*0.8)), # costs during peak
+      if(as.numeric(input$offpeakInput) == ((as.numeric(input$traveldaysInput)*2))){
+        c(1:as.numeric(input$offpeakInput)*(as.numeric(input$faircostInput)*0.6)+5) 
+      } 
+    
+    else if(as.numeric(input$offpeakInput) == 0){
+      dal_voordeel =  c(1:(as.numeric(input$traveldaysInput)*2)*as.numeric(input$faircostInput))+5
+    } 
+     
+  else if(as.numeric(input$offpeakInput) != 0 & as.numeric(input$offpeakInput) != ((as.numeric(input$traveldaysInput)*2))){
+      c(
+     c(1:((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*as.numeric(input$faircostInput)),  # costs during peak
+     
+      c(1:as.numeric(input$offpeakInput)*(as.numeric(input$faircostInput)*0.6) + ((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*as.numeric(input$faircostInput)) # cost during off peak + cost made during peak  
+     +5)  
+    
+    }
+#    altijd_voordeel = c(
+ #     c(1:((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*(as.numeric(input$faircostInput)*0.8)), # costs during peak
+#      
       
-      
-      c(1:as.numeric(input$offpeakInput)*(as.numeric(input$faircostInput)*0.6) + ((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*(as.numeric(input$faircostInput)*0.8)) # cost during off peak + cost made during peak 
-    ) +23,
+ #     c(1:as.numeric(input$offpeakInput)*(as.numeric(input$faircostInput)*0.6) + ((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*(as.numeric(input$faircostInput)*0.8)) # cost during off peak + cost made during peak 
+#    ) +23,
     
-    traject_vrij = rep(as.numeric(input$trajectfixedInput), each = (as.numeric(input$traveldaysInput)*2)),
+ #   traject_vrij = rep(as.numeric(input$trajectfixedInput), each = (as.numeric(input$traveldaysInput)*2)),
     
-    altijd_vrij = rep(351, each = (as.numeric(input$traveldaysInput)*2)),
+  #  altijd_vrij = rep(351, each = (as.numeric(input$traveldaysInput)*2)),
     
-    dal_vrij = c(
-      c(1:((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*as.numeric(input$faircostInput)), # costs during peak
+   # dal_vrij = c(
+   #   c(1:((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*as.numeric(input$faircostInput)), # costs during peak
     
     
-    c(1:as.numeric(input$offpeakInput)*(as.numeric(input$faircostInput)*0) + ((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*as.numeric(input$faircostInput)) # cost during off peak + cost made during peak 
-    )+105
+  #  c(1:as.numeric(input$offpeakInput)*(as.numeric(input$faircostInput)*0) + ((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*as.numeric(input$faircostInput)) # cost during off peak + cost made during peak 
+   # )+105
     )
     
     
