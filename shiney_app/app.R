@@ -42,7 +42,7 @@ server = function(input, output) {
   output$offpeakOutput = renderUI({
     sliderInput("offpeakInput", "",
                 min = 0, max = (as.numeric(input$traveldaysInput)*2), 
-                value = 1, step = 1, round = TRUE)
+                value = 0, step = 1, round = TRUE)
   })
   
   ############################################
