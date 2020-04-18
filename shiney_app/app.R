@@ -15,7 +15,7 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                               uiOutput("offpeakOutput"),
                               br(),
                               textInput("faircostInput", "Enkele ritprijs (zonder korting)",
-                                        value = "1"),
+                                        value = ""),
                               br(),
                               textInput("trajectfixedInput", "Prijs traject abonnement (via ns.nl)",
                                         value = "")
@@ -68,7 +68,9 @@ server = function(input, output) {
   
 
   observe({
-   
+    
+   req(input$faircostInput) # makes sure App does not bug when cost inpout is left empty
+    
     if(!is.null(input$offpeakInput)) {
     
     
