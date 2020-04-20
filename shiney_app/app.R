@@ -94,7 +94,26 @@ server = function(input, output) {
       c(1:as.numeric(input$offpeakInput)*(as.numeric(input$faircostInput)*0.6) + ((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*as.numeric(input$faircostInput)) # cost during off peak + cost made during peak  
      +5)  
     
-    }
+  }
+  ,
+  altijd_voordeel = 
+    
+    if(as.numeric(input$offpeakInput) == ((as.numeric(input$traveldaysInput)*2))){
+      c(1:as.numeric(input$offpeakInput)*(as.numeric(input$faircostInput)*0.6)+23) 
+    } 
+  
+  else if(as.numeric(input$offpeakInput) == 0){
+    dal_voordeel =  c(1:(as.numeric(input$traveldaysInput)*2)*as.numeric(input$faircostInput)*0.8)+23
+  } 
+  
+  else if(as.numeric(input$offpeakInput) != 0 & as.numeric(input$offpeakInput) != ((as.numeric(input$traveldaysInput)*2))){
+    c(
+      c(1:((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*as.numeric(input$faircostInput)*0.8),  # costs during peak
+      
+      c(1:as.numeric(input$offpeakInput)*(as.numeric(input$faircostInput)*0.6) + ((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*as.numeric(input$faircostInput)*0.8) # cost during off peak + cost made during peak  
+      +23)  
+    
+  }
 #    altijd_voordeel = c(
  #     c(1:((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*(as.numeric(input$faircostInput)*0.8)), # costs during peak
 #      
