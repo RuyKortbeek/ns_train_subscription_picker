@@ -45,28 +45,9 @@ server = function(input, output) {
                 value = 0, step = 1, round = TRUE)
   })
   
-  ############################################
-  # Input variables depending on user input #
-  ############################################
-  
-  # Create a theme for the plot later on
-  
-  my.theme =
-    theme_bw()+
-    theme(text = element_text(),
-          title = element_text(size = 15, colour = "black"),
-          axis.text.x = element_text(size = 12, colour = "black"),
-          axis.text.y = element_text(size = 12, colour = "black"),
-          legend.title = element_text(size = 15, colour = "black"),
-          legend.text = element_text(size = 12),
-          legend.position = "left"
-    )
-  # traveldaysInput
-  # travelpeakInput
-  # faircostInput
-  # trajectfixedInput
-  
 
+
+# Observe allows us to fetch the input data
   observe({
     
    req(input$faircostInput) # makes sure App does not bug when cost inpout is left empty
@@ -74,10 +55,15 @@ server = function(input, output) {
     if(!is.null(input$offpeakInput) & !is.null(input$traveldaysInput))  # makes sure df is not bugging when switching off-peak / travelsdays (during switch values becomes NULL)
       {
     
-    
+####################################################
+# Create the main dataframe with the subscriptions #
+####################################################
+
     df= data.frame(
      rit =  c(1:(as.numeric(input$traveldaysInput)*2)),
+     
     basis =  c(1:(as.numeric(input$traveldaysInput)*2)*as.numeric(input$faircostInput)),
+    
     dal_voordeel = 
     
       if(as.numeric(input$offpeakInput) == ((as.numeric(input$traveldaysInput)*2))){
@@ -141,11 +127,15 @@ trajectvrij = rep(as.numeric(input$trajectfixedInput), each = (as.numeric(input$
 
     )
     
-    
+########################
+# Format the dataframe #
+########################
     df.long = df %>% gather(.,
                             key = "subscription",
                             value = "euro",
                             - rit)
+  
+# Drop the "altijd vrij" subscription when the costs are out of range other subscriptions
     
     if((as.numeric(input$traveldaysInput)*2)*as.numeric(input$faircostInput)*1.5 < 351){
       df.long = df.long %>% filter(subscription != "altijd_vrij")
@@ -153,8 +143,25 @@ trajectvrij = rep(as.numeric(input$trajectfixedInput), each = (as.numeric(input$
     }
     
     
+#################
+# plot the data #
+#################
   
-            
+    # Create a custom theme for the plot 
+    
+    my.theme =
+      theme_bw()+
+      theme(text = element_text(),
+            title = element_text(size = 15, colour = "black"),
+            axis.text.x = element_text(size = 12, colour = "black"),
+            axis.text.y = element_text(size = 12, colour = "black"),
+            legend.title = element_text(size = 15, colour = "black"),
+            legend.text = element_text(size = 12),
+            legend.position = "left"
+      )
+    
+    
+   # Create and reender the main plot          
    
   output$mainplot = renderPlot({
     ggplot(df.long, aes(x = 31)) +
@@ -164,7 +171,10 @@ trajectvrij = rep(as.numeric(input$trajectfixedInput), each = (as.numeric(input$
            y = "Totale kosten in Euro's")+
       my.theme
   })
-  
+
+###################
+# The final table #
+###################
     
     df.sub = df.long %>% filter(., rit == (as.numeric(input$traveldaysInput)*2)) %>%
       arrange(euro)
@@ -172,27 +182,15 @@ trajectvrij = rep(as.numeric(input$trajectfixedInput), each = (as.numeric(input$
     
     output$maintable = renderTable(df.sub[,2:3])
     
+###################
+# Cheapest option #
+###################
+    
     output$bestoption = renderText({
       paste("Voordeligste abonnement:", df.sub[1,2])
     })
     }
   })
-  
-  
-
-  #################
-  # plot the data #
-  #################
-  
-  output$mainplot <- renderPlot({
-    if (is.null(input$faircosts)) {
-      return(NULL)
-    }
-   # ggplot(df)+
-    #  geom_line()
-    
-    })
-  
  
 
 }
