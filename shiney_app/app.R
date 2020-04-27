@@ -1,23 +1,26 @@
 library(shiny)
 library(tidyverse)
 
-# Data gebaseerd op https://www.ns.nl/ns-abonnementen/overzicht-abonnementen/ 
+# Data gebaseerd op https://www.ns.nl/ns-abonnementen/overzicht-abonnementen/
+
+help_info = read.delim("help_info_text.txt")
 
 
 ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                sidebarLayout( #Here comes all the things related to the left sidebar (input)
                  sidebarPanel(
-                              h4("Hoeveel dagen per maand reis je?"),
-                              selectInput("traveldaysInput", "Aantal dagen:", choices = c(1:31)),
+                              h4("Vul onderstaande informatie in:"),
+                              h5("Hoe vaak reis je?"),
+                              selectInput("traveldaysInput", "Aantal dagen per maand:", choices = c(1:31)),
                               br(),
                               h4("Hoeveel ritten daarvan reis je buiten de spitsuren"),
-                              h6("Spitstijden: ma t/m vr 06:30-09:00 & 16:00-18:30)"),
+                              h6("(Spitstijden: ma t/m vr 06:30-09:00 & 16:00-18:30)"),
                               uiOutput("offpeakOutput"),
                               br(),
-                              textInput("farecostInput", "Enkele ritprijs (zonder korting)",
+                              textInput("farecostInput", "Enkele ritprijs (via ns.nl)",
                                         value = ""),
                               br(),
-                              textInput("trajectfixedInput", "Prijs traject abonnement (via ns.nl)",
+                              textInput("trajectfixedInput", "Optioneel: Prijs traject abonnement (via ns.nl)",
                                         value = "")
                               
                               
@@ -30,11 +33,13 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                            plotOutput("mainplot"),
                            tableOutput("maintable")
                   ),
-                  tabPanel("HELP / INFO")
+                  tabPanel("HELP / INFO",
+                           textOutput("info")
                 )
                 
                )
                )
+)
 )
 
 
@@ -42,6 +47,9 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
 server = function(input, output) {
   # Number of fares that are travelled during off peak times 
   # Depends on the number of days the user used as an input
+
+output$info = renderText("Hier komt tekst")
+  
   output$offpeakOutput = renderUI({
     sliderInput("offpeakInput", "",
                 min = 0, max = (as.numeric(input$traveldaysInput)*2), 
