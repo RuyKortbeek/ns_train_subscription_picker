@@ -49,10 +49,15 @@ server = function(input, output) {
 
 # Observe allows us to fetch the input data
   observe({
+
     
-    fare_value =  as.numeric(paste(gsub(",", ".", input$farecostInput)))
+#################################
+# Fetch user input to variables #
+#################################
     
-    traject_fixed_value = as.numeric(paste(gsub(",", ".", input$trajectfixedInput)))
+    fare_value =  as.numeric(paste(gsub(",", ".", input$farecostInput))) # includes substitution of user input of a comma to a dot using gsub
+    
+    traject_fixed_value = as.numeric(paste(gsub(",", ".", input$trajectfixedInput))) # includes substitution of user input of a comma to a dot using gsub
     
     number_days = as.numeric(input$traveldaysInput)
     
@@ -135,6 +140,7 @@ trajectvrij = rep(traject_fixed_value, each = (number_days*2))
 
     )
      
+    
 ########################
 # Format the dataframe #
 ########################
