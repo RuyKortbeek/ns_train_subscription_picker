@@ -22,12 +22,10 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                               
                               
                  ),
-                 
-                 
-                 
-                 mainPanel(
+              mainPanel(
+                   h2(textOutput("bestoption")),
+                   br(),
                    plotOutput("mainplot"),
-                   textOutput("bestoption"),
                    tableOutput("maintable")
                     
                )
@@ -75,16 +73,16 @@ server = function(input, output) {
     df= data.frame(
      rit =  c(1:(number_days*2)),
      
-    basis =  c(1:(number_days*2)*fare_value),
+    Basis =  c(1:(number_days*2)*fare_value),
     
-    dal_voordeel = 
+    Dal_Voordeel = 
     
       if(off_peak_fares == ((number_days*2))){
        5+ c(1:off_peak_fares*(fare_value*0.6)) 
       } 
     
     else if(off_peak_fares == 0){
-      dal_voordeel =  5+c(1:(number_days*2)*fare_value)
+       5+c(1:(number_days*2)*fare_value)
     } 
      
   else if(off_peak_fares != 0 & off_peak_fares != ((number_days*2))){
@@ -96,7 +94,7 @@ server = function(input, output) {
     
   }
   ,
-  altijd_voordeel = 
+  Altijd_Voordeel = 
     
     if(off_peak_fares == ((number_days*2))){
      23+ c(1:off_peak_fares*(fare_value*0.6)) 
@@ -115,7 +113,7 @@ server = function(input, output) {
     
   }
 ,
-dal_vrij = 
+Dal_Vrij = 
   
   if(off_peak_fares == ((number_days*2))){
     105+c(1:off_peak_fares*(fare_value*0)) 
@@ -134,9 +132,9 @@ else if(off_peak_fares != 0 & off_peak_fares != ((number_days*2))){
   
 }
 ,
-    altijd_vrij = rep(351, each = (number_days*2))
+    Altijd_Vrij = rep(351, each = (number_days*2))
 ,
-trajectvrij = rep(traject_fixed_value, each = (number_days*2))
+Trajectvrij = rep(traject_fixed_value, each = (number_days*2))
 
     )
      
@@ -145,14 +143,14 @@ trajectvrij = rep(traject_fixed_value, each = (number_days*2))
 # Format the dataframe #
 ########################
     df.long = df %>% gather(.,
-                            key = "subscription",
+                            key = "Abonnement",
                             value = "euro",
                             - rit)
   
 # Drop the "altijd vrij" subscription when the costs are out of range other subscriptions
     
     if((number_days*2)*fare_value*1.5 < 351){
-      df.long = df.long %>% filter(subscription != "altijd_vrij")
+      df.long = df.long %>% filter(Abonnement != "altijd_vrij")
       
     }
     
@@ -179,7 +177,7 @@ trajectvrij = rep(traject_fixed_value, each = (number_days*2))
    
   output$mainplot = renderPlot({
     ggplot(df.long, aes(x = 31)) +
-    geom_line(aes(x = rit/2, y = euro, colour = subscription))+
+    geom_line(aes(x = rit/2, y = euro, colour = Abonnement))+
       labs(title = "Opbouw van de maandelijkse kosten per abonnement",
            x = "Dagen dat je reist",
            y = "Totale kosten in Euro's")+
@@ -201,7 +199,7 @@ trajectvrij = rep(traject_fixed_value, each = (number_days*2))
 ###################
     
     output$bestoption = renderText({
-      paste("Voordeligste abonnement:", df.sub[1,2])
+      paste("Voordeligste abonnement:",gsub("_", " ", df.sub[1,2]))
     })
     }
   })
