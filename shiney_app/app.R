@@ -34,7 +34,7 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                            tableOutput("maintable")
                   ),
                   tabPanel("HELP / INFO",
-                           textOutput("info")
+                           h2(textOutput("info"))
                 )
                 
                )
