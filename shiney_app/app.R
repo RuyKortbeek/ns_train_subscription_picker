@@ -134,7 +134,7 @@ else if(off_peak_fares != 0 & off_peak_fares != ((number_days*2))){
 trajectvrij = rep(traject_fixed_value, each = (number_days*2))
 
     )
-    
+     
 ########################
 # Format the dataframe #
 ########################
