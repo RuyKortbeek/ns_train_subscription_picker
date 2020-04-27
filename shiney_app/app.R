@@ -54,6 +54,8 @@ server = function(input, output) {
     
     traject_fixed_value = as.numeric(paste(gsub(",", ".", input$trajectfixedInput)))
     
+    number_days = as.numeric(input$traveldaysInput)
+    
    req(input$farecostInput) # makes sure App does not bug when cost inpout is left empty
     
     if(!is.null(input$offpeakInput) & !is.null(input$traveldaysInput))  # makes sure df is not bugging when switching off-peak / travelsdays (during switch values becomes NULL)
@@ -64,70 +66,70 @@ server = function(input, output) {
 ####################################################
 
     df= data.frame(
-     rit =  c(1:(as.numeric(input$traveldaysInput)*2)),
+     rit =  c(1:(number_days*2)),
      
-    basis =  c(1:(as.numeric(input$traveldaysInput)*2)*fare_value),
+    basis =  c(1:(number_days*2)*fare_value),
     
     dal_voordeel = 
     
-      if(as.numeric(input$offpeakInput) == ((as.numeric(input$traveldaysInput)*2))){
+      if(as.numeric(input$offpeakInput) == ((number_days*2))){
        5+ c(1:as.numeric(input$offpeakInput)*(fare_value*0.6)) 
       } 
     
     else if(as.numeric(input$offpeakInput) == 0){
-      dal_voordeel =  5+c(1:(as.numeric(input$traveldaysInput)*2)*fare_value)
+      dal_voordeel =  5+c(1:(number_days*2)*fare_value)
     } 
      
-  else if(as.numeric(input$offpeakInput) != 0 & as.numeric(input$offpeakInput) != ((as.numeric(input$traveldaysInput)*2))){
+  else if(as.numeric(input$offpeakInput) != 0 & as.numeric(input$offpeakInput) != ((number_days*2))){
      5+ c(
-     c(1:((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*fare_value),  # costs during peak
+     c(1:((number_days*2)-as.numeric(input$offpeakInput))*fare_value),  # costs during peak
      
-      c(1:as.numeric(input$offpeakInput)*(fare_value*0.6) + ((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*fare_value) # cost during off peak + cost made during peak  
+      c(1:as.numeric(input$offpeakInput)*(fare_value*0.6) + ((number_days*2)-as.numeric(input$offpeakInput))*fare_value) # cost during off peak + cost made during peak  
      )  
     
   }
   ,
   altijd_voordeel = 
     
-    if(as.numeric(input$offpeakInput) == ((as.numeric(input$traveldaysInput)*2))){
+    if(as.numeric(input$offpeakInput) == ((number_days*2))){
      23+ c(1:as.numeric(input$offpeakInput)*(fare_value*0.6)) 
     } 
   
   else if(as.numeric(input$offpeakInput) == 0){
-    dal_voordeel = 23+ c(1:(as.numeric(input$traveldaysInput)*2)*fare_value*0.8)
+    dal_voordeel = 23+ c(1:(number_days*2)*fare_value*0.8)
   } 
    
-  else if(as.numeric(input$offpeakInput) != 0 & as.numeric(input$offpeakInput) != ((as.numeric(input$traveldaysInput)*2))){
+  else if(as.numeric(input$offpeakInput) != 0 & as.numeric(input$offpeakInput) != ((number_days*2))){
    23+ c(
-      c(1:((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*fare_value*0.8),  # costs during peak
+      c(1:((number_days*2)-as.numeric(input$offpeakInput))*fare_value*0.8),  # costs during peak
       
-      c(1:as.numeric(input$offpeakInput)*(fare_value*0.6) + ((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*fare_value*0.8) # cost during off peak + cost made during peak  
+      c(1:as.numeric(input$offpeakInput)*(fare_value*0.6) + ((number_days*2)-as.numeric(input$offpeakInput))*fare_value*0.8) # cost during off peak + cost made during peak  
       )  
     
   }
 ,
 dal_vrij = 
   
-  if(as.numeric(input$offpeakInput) == ((as.numeric(input$traveldaysInput)*2))){
+  if(as.numeric(input$offpeakInput) == ((number_days*2))){
     105+c(1:as.numeric(input$offpeakInput)*(fare_value*0)) 
   } 
 
 else if(as.numeric(input$offpeakInput) == 0){
-  dal_voordeel =  105+c(1:(as.numeric(input$traveldaysInput)*2)*fare_value)
+  dal_voordeel =  105+c(1:(number_days*2)*fare_value)
 } 
 
-else if(as.numeric(input$offpeakInput) != 0 & as.numeric(input$offpeakInput) != ((as.numeric(input$traveldaysInput)*2))){
+else if(as.numeric(input$offpeakInput) != 0 & as.numeric(input$offpeakInput) != ((number_days*2))){
   105+c(
-    c(1:((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*fare_value),  # costs during peak
+    c(1:((number_days*2)-as.numeric(input$offpeakInput))*fare_value),  # costs during peak
     
-    c(1:as.numeric(input$offpeakInput)*(fare_value*0) + ((as.numeric(input$traveldaysInput)*2)-as.numeric(input$offpeakInput))*fare_value) # cost during off peak + cost made during peak  
+    c(1:as.numeric(input$offpeakInput)*(fare_value*0) + ((number_days*2)-as.numeric(input$offpeakInput))*fare_value) # cost during off peak + cost made during peak  
     )  
   
 }
 ,
-    altijd_vrij = rep(351, each = (as.numeric(input$traveldaysInput)*2))
+    altijd_vrij = rep(351, each = (number_days*2))
 ,
-trajectvrij = rep(traject_fixed_value, each = (as.numeric(input$traveldaysInput)*2))
+trajectvrij = rep(traject_fixed_value, each = (number_days*2))
 
     )
     
@@ -141,7 +143,7 @@ trajectvrij = rep(traject_fixed_value, each = (as.numeric(input$traveldaysInput)
   
 # Drop the "altijd vrij" subscription when the costs are out of range other subscriptions
     
-    if((as.numeric(input$traveldaysInput)*2)*fare_value*1.5 < 351){
+    if((number_days*2)*fare_value*1.5 < 351){
       df.long = df.long %>% filter(subscription != "altijd_vrij")
       
     }
@@ -180,7 +182,7 @@ trajectvrij = rep(traject_fixed_value, each = (as.numeric(input$traveldaysInput)
 # The final table #
 ###################
     
-    df.sub = df.long %>% filter(., rit == (as.numeric(input$traveldaysInput)*2)) %>%
+    df.sub = df.long %>% filter(., rit == (number_days*2)) %>%
       arrange(euro)
       
     
