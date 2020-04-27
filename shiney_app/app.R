@@ -23,11 +23,16 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                               
                  ),
               mainPanel(
-                   h2(textOutput("bestoption")),
-                   br(),
-                   plotOutput("mainplot"),
-                   tableOutput("maintable")
-                    
+                tabsetPanel(
+                  tabPanel("Data",
+                           h2(textOutput("bestoption")),
+                           br(),
+                           plotOutput("mainplot"),
+                           tableOutput("maintable")
+                  ),
+                  tabPanel("HELP / INFO")
+                )
+                
                )
                )
 )
