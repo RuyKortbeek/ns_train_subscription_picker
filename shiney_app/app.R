@@ -3,7 +3,7 @@ library(tidyverse)
 
 # Data gebaseerd op https://www.ns.nl/ns-abonnementen/overzicht-abonnementen/
 
-help_info = read.delim("help_info_text.txt")
+help_info = readChar("help_info_text.txt", nchars = file.info("help_info_text.txt")$size) # import text data for the "HELP / INFO" tab
 
 
 ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
@@ -48,7 +48,7 @@ server = function(input, output) {
   # Number of fares that are travelled during off peak times 
   # Depends on the number of days the user used as an input
 
-output$info = renderText("Hier komt tekst")
+output$info = renderText(help_info)
   
   output$offpeakOutput = renderUI({
     sliderInput("offpeakInput", "",
