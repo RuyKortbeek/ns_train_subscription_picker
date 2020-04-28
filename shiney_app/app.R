@@ -168,7 +168,7 @@ Trajectvrij = rep(traject_fixed_value, each = (number_days*2))
 # Drop the "altijd vrij" subscription when the costs are out of range other subscriptions
     
     if((number_days*2)*fare_value*1.5 < 351){
-      df.long = df.long %>% filter(Abonnement != "altijd_vrij")
+      df.long = df.long %>% filter(Abonnement != "Altijd_Vrij")
       
     }
     
