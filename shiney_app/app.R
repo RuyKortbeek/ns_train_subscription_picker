@@ -6,10 +6,10 @@ library(tidyverse)
 help_info = readChar("help_info_text.txt", nchars = file.info("help_info_text.txt")$size) # import text data for the "HELP / INFO" tab
 
 
-ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
+ui = fluidPage(titlePanel("Dé NS-abonnement calculator!"),
                sidebarLayout( #Here comes all the things related to the left sidebar (input)
                  sidebarPanel(
-                              h4(p("Vul onderstaande informatie in:", style="color:black;background-color:#BDC3C7;padding:15px;border-radius:10px")),
+                              h4(p("Bereken de maandelijkste kosten per NS-abo aan de hand van jouw reisgedrag!", style="color:black;background-color:#BDC3C7;padding:15px;border-radius:10px")),
                               br(),
                               h5("Hoe vaak reis je?"),
                               selectInput("traveldaysInput", "Aantal dagen per maand:", choices = c(1:31)),
@@ -28,15 +28,19 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                  ),
               mainPanel(
                 tabsetPanel(
-                  tabPanel("Data",
+                  tabPanel("Data", icon = icon("chart-line"),
                            h2(textOutput("bestoption")),
                            br(),
                            plotOutput("mainplot"),
                            tableOutput("maintable")
                   ),
-                  tabPanel("HELP/INFO ",icon = icon("question-circle"),
-                           h2(textOutput("info"))
-                )
+                  tabPanel("HELP / INFO ",icon = icon("question-circle"),
+                         source("Help_info_script.R")
+                ),
+                
+                tabPanel("Abonnementen uitleg", icon = icon("list-alt"),
+                         source("Abo_uitleg_script.R")
+                         )
                 
                )
                )
