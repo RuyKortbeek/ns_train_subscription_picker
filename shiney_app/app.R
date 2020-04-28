@@ -9,7 +9,8 @@ help_info = readChar("help_info_text.txt", nchars = file.info("help_info_text.tx
 ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                sidebarLayout( #Here comes all the things related to the left sidebar (input)
                  sidebarPanel(
-                              h4("Vul onderstaande informatie in:"),
+                              h4(p("Vul onderstaande informatie in:", style="color:black;background-color:#BDC3C7;padding:15px;border-radius:10px")),
+                              br(),
                               h5("Hoe vaak reis je?"),
                               selectInput("traveldaysInput", "Aantal dagen per maand:", choices = c(1:31)),
                               br(),
@@ -33,7 +34,7 @@ ui = fluidPage(titlePanel("Dé NS abonnement kiezer"),
                            plotOutput("mainplot"),
                            tableOutput("maintable")
                   ),
-                  tabPanel("HELP / INFO",
+                  tabPanel("HELP/INFO ",icon = icon("question-circle"),
                            h2(textOutput("info"))
                 )
                 
