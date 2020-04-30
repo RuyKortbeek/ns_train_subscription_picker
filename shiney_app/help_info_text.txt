@@ -1,7 +1,4 @@
-De help en informatie tekst komt hier
+p(De help en informatie tekst komt hier
 
 Dit is slechts <b> een tekstbericht </b>
-
-ik moet nog wel uitvinden hoe dit goed opgemaakt kan worden
-
-Dat is wel jammer. 
+)

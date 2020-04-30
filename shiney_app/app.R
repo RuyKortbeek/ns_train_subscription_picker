@@ -6,12 +6,10 @@ library(tidyverse)
 help_info = readChar("help_info_text.txt", nchars = file.info("help_info_text.txt")$size) # import text data for the "HELP / INFO" tab
 
 
-ui = fluidPage(titlePanel("Dé NS-abonnement calculator!"),
+ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-abonnement calculator"),
                sidebarLayout( #Here comes all the things related to the left sidebar (input)
                  sidebarPanel(
-                              h4(p("Bereken de maandelijkste kosten per NS-abo aan de hand van jouw reisgedrag!", style="color:black;background-color:#BDC3C7;padding:15px;border-radius:10px")),
-                              br(),
-                              h5("Hoe vaak reis je?"),
+                              h4("Hoe vaak reis je?"),
                               selectInput("traveldaysInput", "Aantal dagen per maand:", choices = c(1:31)),
                               br(),
                               h4("Hoeveel ritten daarvan reis je buiten de spitsuren"),
@@ -27,12 +25,15 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator!"),
                               
                  ),
               mainPanel(
+                fluidRow(includeHTML("app_introduction.html")),
+                fluidRow(
                 tabsetPanel(
                   tabPanel("Data", icon = icon("chart-line"),
                            h2(textOutput("bestoption")),
                            br(),
-                           plotOutput("mainplot"),
-                           tableOutput("maintable")
+                           tableOutput("maintable"),
+                           plotOutput("mainplot")
+                           
                   ),
                   tabPanel("HELP / INFO ",icon = icon("question-circle"),
                          source("Help_info_script.R")
@@ -41,11 +42,12 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator!"),
                 tabPanel("Abonnementen uitleg", icon = icon("list-alt"),
                          source("Abo_uitleg_script.R")
                          )
-                
                )
                )
+              )
 )
 )
+
 
 
 
