@@ -40,7 +40,7 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                 ),
                 
                 tabPanel("Abonnementen uitleg", icon = icon("list-alt"),
-                         source("Abo_uitleg_script.R")
+                          source("Abo_uitleg_script.R")
                          )
                )
                )
