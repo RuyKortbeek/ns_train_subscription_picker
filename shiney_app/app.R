@@ -12,8 +12,8 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                               h4("Hoe vaak reis je?"),
                               selectInput("traveldaysInput", "Aantal dagen per maand:", choices = c(1:31)),
                               br(),
-                              h4("Hoeveel ritten daarvan reis je buiten de spitsuren"),
-                              h6("(Spitstijden: ma t/m vr 06:30-09:00 & 16:00-18:30)"),
+                              h4("Aantal ritten", em(strong("buiten")), "de spits"),
+                              h6("Spitstijden:",br(), "ma t/m vr 06:30-09:00 & 16:00-18:30"),
                               uiOutput("offpeakOutput"),
                               br(),
                               textInput("farecostInput", "Enkele ritprijs (via ns.nl)",
@@ -31,7 +31,7 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                 tabsetPanel(
                   tabPanel("Data", icon = icon("chart-line"),
                            h2(textOutput("bestoption")),
-                           br(),
+                           hr(),
                            fixedRow(
                            column(3,tableOutput("maintable")),
                            column(9,plotOutput("mainplot"))
