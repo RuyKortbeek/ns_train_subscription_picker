@@ -1,4 +1,5 @@
-p(h4("De informatie over de verschillende abonnementen komt van de website van de NS"))
+span(
+p(h4("De informatie over de verschillende abonnementen komt van de website van de NS")),
 
 p(h2(em("Basis")),
   h4("- Geen abonnement nodig",br(),
@@ -39,5 +40,5 @@ p(h2(em("Basis")),
      "- Onbeperkt reizen op een vast traject",br(),
       "- 40% korting buiten de spits op andere trajecten",br(),
       "- 40% korting voor 3 medereizigers")
-
+), style="color:#405843"
 )
