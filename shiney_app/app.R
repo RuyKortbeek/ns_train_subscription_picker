@@ -16,11 +16,15 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                               h6("Spitstijden:",br(), "ma t/m vr 06:30-09:00 & 16:00-18:30"),
                               uiOutput("offpeakOutput"),
                               br(),
-                              textInput("farecostInput", "Enkele ritprijs (via ns.nl)",
+                              h5(strong("Enkele ritprijs", HTML("<a href=https://www.ns.nl>via ns.nl</a>"))),
+                              textInput("farecostInput", label = NULL,
                                         value = ""),
                               br(),
-                              textInput("trajectfixedInput", "Optioneel: Prijs traject abonnement (via ns.nl)",
+                              h5(strong("Optioneel: Prijs traject abonnement", HTML("<a href=https://www.ns.nl/webshop/nieuwproduct?0&product=TVM&reisklasse=2&contractduur=1MND&returnurl=https://www.ns.nl/abonnementen/traject-vrij.html>
+                                   via ns.nl</a>"))),
+                              textInput("trajectfixedInput",label = NULL,
                                         value = ""),
+                              
                               width = 3
                               
                               
@@ -30,7 +34,7 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                 fluidRow(
                 tabsetPanel(
                   tabPanel("Data", icon = icon("chart-line"),
-                           h2(textOutput("bestoption")),
+                           span(h2(textOutput("bestoption")),style="color:#336600"),
                            hr(),
                            fixedRow(
                            column(3,tableOutput("maintable")),
@@ -167,7 +171,7 @@ Trajectvrij = rep(traject_fixed_value, each = (number_days*2))
 ########################
     df.long = df %>% gather(.,
                             key = "Abonnement",
-                            value = "euro",
+                            value = "Euro",
                             - rit)
   
 # Drop the "altijd vrij" subscription when the costs are out of range other subscriptions
@@ -188,6 +192,7 @@ Trajectvrij = rep(traject_fixed_value, each = (number_days*2))
       theme_bw()+
       theme(text = element_text(),
             title = element_text(size = 15, colour = "black"),
+            plot.title = element_text(hjust = 0.5),
             axis.text.x = element_text(size = 12, colour = "black"),
             axis.text.y = element_text(size = 12, colour = "black"),
             legend.title = element_text(size = 15, colour = "black"),
@@ -200,7 +205,8 @@ Trajectvrij = rep(traject_fixed_value, each = (number_days*2))
    
   output$mainplot = renderPlot({
     ggplot(df.long, aes(x = 31)) +
-    geom_line(aes(x = rit/2, y = euro, colour = Abonnement), size = 3)+
+    geom_line(aes(x = rit/2, y = Euro, colour = Abonnement), size = 3)+
+      scale_x_continuous(breaks = seq(1, number_days, by = 1)) +
       labs(title = "Opbouw van de maandelijkse kosten per abonnement",
            x = "Dagen dat je reist",
            y = "Totale kosten in Euro's")+
@@ -212,7 +218,7 @@ Trajectvrij = rep(traject_fixed_value, each = (number_days*2))
 ###################
     
     df.sub = df.long %>% filter(., rit == (number_days*2)) %>%
-      arrange(euro)
+      arrange(Euro) 
       
     
     output$maintable = renderTable(df.sub[,2:3])
