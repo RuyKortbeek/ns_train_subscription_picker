@@ -20,7 +20,8 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                                         value = ""),
                               br(),
                               textInput("trajectfixedInput", "Optioneel: Prijs traject abonnement (via ns.nl)",
-                                        value = "")
+                                        value = ""),
+                              width = 3
                               
                               
                  ),
@@ -31,8 +32,10 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                   tabPanel("Data", icon = icon("chart-line"),
                            h2(textOutput("bestoption")),
                            br(),
-                           tableOutput("maintable"),
-                           plotOutput("mainplot")
+                           fixedRow(
+                           column(3,tableOutput("maintable")),
+                           column(9,plotOutput("mainplot"))
+                           )
                            
                   ),
                   tabPanel("HELP / INFO ",icon = icon("question-circle"),
@@ -189,7 +192,7 @@ Trajectvrij = rep(traject_fixed_value, each = (number_days*2))
             axis.text.y = element_text(size = 12, colour = "black"),
             legend.title = element_text(size = 15, colour = "black"),
             legend.text = element_text(size = 12),
-            legend.position = "left"
+            legend.position = c(0.2, 0.6)
       )
     
     
@@ -197,7 +200,7 @@ Trajectvrij = rep(traject_fixed_value, each = (number_days*2))
    
   output$mainplot = renderPlot({
     ggplot(df.long, aes(x = 31)) +
-    geom_line(aes(x = rit/2, y = euro, colour = Abonnement))+
+    geom_line(aes(x = rit/2, y = euro, colour = Abonnement), size = 3)+
       labs(title = "Opbouw van de maandelijkse kosten per abonnement",
            x = "Dagen dat je reist",
            y = "Totale kosten in Euro's")+
