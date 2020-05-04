@@ -1,14 +1,54 @@
 <html>
+  
+  <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
 
-<h3>Berekent de voordeligste optie voor jou!</h3>
-<p> Omdat treinreizen al duur genoeg is!! 
-  Deze web-applicatie berekent de kosten van een bepaald traject voor de verschillende NS-abonnement. <br/>
- De verschillen in kosten zijn o.a. afhankelijk van hoe vaak je reist, en hoe vaak dit buiten de spits is.<br/>
-  De applicatie gaat er vanuit dat je 2 ritten per reisdag maakt (heen-en-terug) via dezelfde route. Ideaal voor forenzen!  
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+}
+
+.left {
+  width: 90%;
+}
+
+.right {
+  width: 10%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+</head>
+<body>
+  
+<div class="row">
+<div class="column left">
+
+<h3>Berekent de voordeligste optie voor jouw reistraject</h3>
+<p STYLE="text-align: justify;"> Omdat treinreizen al duur genoeg is!! <br/>
+  Deze applicatie berekent de maandelijkste kosten voor verschillende NS-abonnementen, afhankelijk van jouw reisgedrag. <br/>
+  De applicatie gaat er vanuit dat je 2 ritten per reisdag maakt (heen-en-terug) via dezelfde route.   
 </p>
 <p> 
- <h4><em> Vul de velden hier links in, en check de cheapste optie hieronder</em></h4>
+ <h4><em> Vul de velden hier links in, en check de cheapste optie hieronder!</em></h4>
 </p>
+</div>
+
+ <div class="column right">
+    <a href="https://github.com/RuyKortbeek/ns_train_subscription_picker">
+         <img alt="Github Repository" width=100%; height=auto; opacity= 0.3 src="https://github.com/RuyKortbeek/ns_train_subscription_picker/blob/master/shiney_app/github_logo.png?raw=true"
+         ;>
+      </a>
+  </div>
 
 </html>

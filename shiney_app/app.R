@@ -16,12 +16,12 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                               h6("Spitstijden:",br(), "ma t/m vr 06:30-09:00 & 16:00-18:30"),
                               uiOutput("offpeakOutput"),
                               br(),
-                              h5(strong("Enkele ritprijs", HTML("<a href=https://www.ns.nl>via ns.nl</a>"))),
+                              h5(strong("Enkele ritprijs", HTML("<a href=https://www.ns.nl>via ns.nl</a>"), ":")),
                               textInput("farecostInput", label = NULL,
                                         value = ""),
                               br(),
-                              h5(strong("Optioneel: Prijs traject abonnement", HTML("<a href=https://www.ns.nl/webshop/nieuwproduct?0&product=TVM&reisklasse=2&contractduur=1MND&returnurl=https://www.ns.nl/abonnementen/traject-vrij.html>
-                                   via ns.nl</a>"))),
+                              h5(strong(em("Optioneel:"),"Prijs traject abonnement", HTML("<a href=https://www.ns.nl/webshop/nieuwproduct?0&product=TVM&reisklasse=2&contractduur=1MND&returnurl=https://www.ns.nl/abonnementen/traject-vrij.html>
+                                   via ns.nl</a>"),":")),
                               textInput("trajectfixedInput",label = NULL,
                                         value = ""),
                               
@@ -33,7 +33,7 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                 fluidRow(includeHTML("app_introduction.html")),
                 fluidRow(
                 tabsetPanel(
-                  tabPanel("Data", icon = icon("chart-line"),
+                  tabPanel("Resultaten", icon = icon("chart-line"),
                            span(h2(textOutput("bestoption")),style="color:#336600"),
                            hr(),
                            fixedRow(
