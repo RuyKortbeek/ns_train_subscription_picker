@@ -161,7 +161,7 @@ else if(off_peak_fares != 0 & off_peak_fares != ((number_days*2))){
 ,
     Altijd_Vrij = rep(351, each = (number_days*2))
 ,
-Trajectvrij = rep(traject_fixed_value, each = (number_days*2))
+Traject_Vrij = rep(traject_fixed_value, each = (number_days*2))
 
     )
      
