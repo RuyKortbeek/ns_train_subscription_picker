@@ -3,8 +3,6 @@ library(tidyverse)
 
 # Data gebaseerd op https://www.ns.nl/ns-abonnementen/overzicht-abonnementen/
 
-help_info = readChar("help_info_text.txt", nchars = file.info("help_info_text.txt")$size) # import text data for the "HELP / INFO" tab
-
 
 ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-abonnement calculator"),
                sidebarLayout( #Here comes all the things related to the left sidebar (input)
@@ -21,7 +19,7 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                                         value = ""),
                               br(),
                               h5(strong(em("Optioneel:"),"Prijs traject abonnement", HTML("<a href=https://www.ns.nl/webshop/nieuwproduct?0&product=TVM&reisklasse=2&contractduur=1MND&returnurl=https://www.ns.nl/abonnementen/traject-vrij.html>
-                                   via ns.nl</a>"),":")),
+                                   bereken hier (via ns.nl)</a>"),":")),
                               textInput("trajectfixedInput",label = NULL,
                                         value = ""),
                               
@@ -227,7 +225,8 @@ Traject_Vrij = rep(traject_fixed_value, each = (number_days*2))
 # Cheapest option #
 ###################
     
-    output$bestoption = renderText({
+    output$bestoption = 
+      renderText({
       paste("Voordeligste abonnement:",gsub("_", " ", df.sub[1,2]))
     })
     }

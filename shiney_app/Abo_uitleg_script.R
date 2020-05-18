@@ -40,5 +40,5 @@ p(h2(em("Basis")),
      "- Onbeperkt reizen op een vast traject",br(),
       "- 40% korting buiten de spits op andere trajecten",br(),
       "- 40% korting voor 3 medereizigers")
-), style="color:#405843"
+), style="color:0370B4; backgroud-color:powderblue;font-family:arial;"
 )
