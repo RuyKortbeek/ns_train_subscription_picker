@@ -19,7 +19,7 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                                         value = ""),
                               br(),
                               h5(strong(em("Optioneel:"),"Prijs traject abonnement", HTML("<a href=https://www.ns.nl/webshop/nieuwproduct?0&product=TVM&reisklasse=2&contractduur=1MND&returnurl=https://www.ns.nl/abonnementen/traject-vrij.html>
-                                   via ns.nl</a>"),":")),
+                                   bereken hier (via ns.nl)</a>"),":")),
                               textInput("trajectfixedInput",label = NULL,
                                         value = ""),
                               
