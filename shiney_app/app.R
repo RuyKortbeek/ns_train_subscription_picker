@@ -3,8 +3,6 @@ library(tidyverse)
 
 # Data gebaseerd op https://www.ns.nl/ns-abonnementen/overzicht-abonnementen/
 
-help_info = readChar("help_info_text.txt", nchars = file.info("help_info_text.txt")$size) # import text data for the "HELP / INFO" tab
-
 
 ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-abonnement calculator"),
                sidebarLayout( #Here comes all the things related to the left sidebar (input)
@@ -227,7 +225,8 @@ Traject_Vrij = rep(traject_fixed_value, each = (number_days*2))
 # Cheapest option #
 ###################
     
-    output$bestoption = renderText({
+    output$bestoption = 
+      renderText({
       paste("Voordeligste abonnement:",gsub("_", " ", df.sub[1,2]))
     })
     }
