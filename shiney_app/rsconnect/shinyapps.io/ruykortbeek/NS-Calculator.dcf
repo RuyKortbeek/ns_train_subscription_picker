@@ -1,0 +1,13 @@
+name: ns-calculator
+title: ns-calculator
+username:
+account: ruykortbeek
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2240605
+bundleId: 3163615
+url: https://ruykortbeek.shinyapps.io/NS-Calculator/
+when: 1589838119.39101
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: app2.R|help_info_text.txt|Test_app/test_app.R|Test_app/test2.R
