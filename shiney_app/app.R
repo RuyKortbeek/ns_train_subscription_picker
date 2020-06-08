@@ -8,7 +8,7 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                sidebarLayout( #Here comes all the things related to the left sidebar (input)
                  sidebarPanel(
                               h4("Hoe vaak reis je?"),
-                              selectInput("traveldaysInput", "Aantal dagen per maand:", choices = c(1:31)),
+                              sliderInput("traveldaysInput", "Aantal dagen per maand:", min = 1, max = 31, value = 1, step = 1, round = TRUE),
                               br(),
                               h4("Aantal ritten", em(strong("buiten")), "de spits"),
                               h6("Spitstijden:",br(), "ma t/m vr 06:30-09:00 & 16:00-18:30"),
