@@ -1,8 +1,8 @@
 library(httr)
 
-###############################
-# Input data for http request #
-###############################
+#####################################
+# Input data for http PRICE request #
+#####################################
 
 # Url to retrive data from
 ns.url = as.character("https://gateway.apiportal.ns.nl/public-prijsinformatie/prices?fromStation=Zaandam&toStation=Alkmaar")
