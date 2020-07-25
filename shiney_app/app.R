@@ -4,7 +4,7 @@ library(httr)
 
 # Data based on https://www.ns.nl/ns-abonnementen/overzicht-abonnementen/
 
-stations = read.csv(file = "ns_stations.csv", header = TRUE, stringsAsFactors = TRUE) %>% select("Station")
+stations = read.csv(file = "ns_stations.csv", header = TRUE, stringsAsFactors = TRUE) %>% distinct()
 
 ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-abonnement calculator"),
                sidebarLayout( #Here comes all the things related to the left sidebar (input)
@@ -71,11 +71,11 @@ output$info = renderText(help_info)
 # Observe allows us to fetch the input data
   observe({
     
-    A = input$station_A
-    B = input$station_B
+     code_station_A = (stations %>% filter(Station == input$station_A))[,2]
+     code_station_B = (stations %>% filter(Station == input$station_B))[,2]
     
     # Url to retrive data from
-    ns.url = as.character(paste("https://gateway.apiportal.ns.nl/public-prijsinformatie/prices?fromStation=",A,"&toStation=",B, sep = ""))
+    ns.url = as.character(paste("https://gateway.apiportal.ns.nl/public-prijsinformatie/prices?fromStation=",code_station_A,"&toStation=",code_station_B, sep = ""))
     
     # Ocp-Apim-Subscription-Key -> should be in header pirmaire sleutel
     sub.key = as.character("92fd805f312b4907840fa436a2af87df")
