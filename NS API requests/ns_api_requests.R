@@ -6,8 +6,8 @@ library(httr)
 
 # Assign from-and to stations to variables "A" and "B"  
 
-A = "Zaandam"
-B = "Alkmaar"
+A = input$station_A
+B = inbut$station_B
 
 # Url to retrive data from
 ns.url = as.character(paste("https://gateway.apiportal.ns.nl/public-prijsinformatie/prices?fromStation=",A,"&toStation=",B, sep = ""))

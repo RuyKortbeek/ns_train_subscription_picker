@@ -3,30 +3,21 @@ library(tidyverse)
 
 # Data based on https://www.ns.nl/ns-abonnementen/overzicht-abonnementen/
 
+stations = read.csv(file = "ns_stations.csv", header = TRUE, stringsAsFactors = TRUE) %>% select("Station")
 
 ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-abonnement calculator"),
                sidebarLayout( #Here comes all the things related to the left sidebar (input)
-                 sidebarPanel(
+                 sidebarPanel(selectInput("station_A", label = "Ik reis tussen:", 
+                                          choices = stations$Station),
+                              selectInput("station_B", label = "en:", 
+                                          choices = stations$Station),
+                              br(),
                               h4("Hoe vaak reis je?"),
                               sliderInput("traveldaysInput", "Aantal dagen per maand:", min = 1, max = 31, value = 1, step = 1, round = TRUE),
                               br(),
                               h4("Aantal ritten", em(strong("buiten")), "de spits"),
                               h6("Spitstijden:",br(), "ma t/m vr 06:30-09:00 & 16:00-18:30"),
                               uiOutput("offpeakOutput"),
-                              br(),
-                              h5(strong("Enkele ritprijs:")),
-                              helpText(a("via NS.nl", href = "http://ns.nl", target="_blank")),
-                                 
-                              textInput("farecostInput", label = NULL,
-                                        value = ""),
-                              br(),
-                              h5(strong(em("Optioneel:"),"Prijs traject abonnement")),
-                              helpText(a("bereken hier", 
-                                        href="http://ns.nl/webshop/nieuwproduct?0&product=TVM&reisklasse=2&contractduur=1MND&returnurl=https://www.ns.nl/abonnementen/traject-vrij.html", 
-                                         target="_blank")),
-                              textInput("trajectfixedInput",label = NULL,
-                                        value = ""),
-                              
                               width = 3
                               
                               
@@ -81,6 +72,8 @@ output$info = renderText(help_info)
 #################################
 # Fetch user input to variables #
 #################################
+    
+    #farecostInput
     
     fare_value =  as.numeric(paste(gsub(",", ".", input$farecostInput))) # includes substitution of user input of a comma to a dot using gsub
     
