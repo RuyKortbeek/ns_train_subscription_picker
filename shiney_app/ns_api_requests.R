@@ -6,6 +6,7 @@ library(httr)
 
 # Assign from-and to stations to variables "A" and "B"  
 
+
 A = input$station_A
 B = inbut$station_B
 
@@ -38,3 +39,6 @@ request.result = content( # conent() is a JSON parser - it will create a list() 
 
 single.fare = (request.result$priceOptions[[2]]$totalPrices[[1]]$price)/100
 print(single.fare)
+
+
+
