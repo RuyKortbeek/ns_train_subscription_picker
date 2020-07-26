@@ -187,10 +187,13 @@ output$info = renderText(help_info)
  }
   
  ,
-     Altijd_Vrij = rep(351, each = (number_days*2))
-    
+ Traject_Vrij = rep(traject_fixed_value, each = (number_days*2))
+ 
  ,
- Traject_Vrij = rep(351, each = (number_days*2))
+ Dal_Vrij = rep(105, each = (number_days*2))
+ 
+ ,
+ Altijd_Vrij = rep(351, each = (number_days*2))
 
      )
 
