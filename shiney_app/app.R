@@ -106,7 +106,8 @@ output$info = renderText(help_info)
     fare_value = as.numeric((request.result$priceOptions[[2]]$totalPrices[[1]]$price)/100)
 
 
-    traject_fixed_value = as.numeric(paste(gsub(",", ".", input$trajectfixedInput))) # includes substitution of user input of a comma to a dot using gsub
+    traject_fixed_value =  as.numeric((request.result$priceOptions[[2]]$totalPrices[[17]]$price)/100) # This is the monthly price for a year - subscribtion
+
     
     number_days = as.numeric(input$traveldaysInput)
     
