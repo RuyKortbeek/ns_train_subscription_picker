@@ -7,8 +7,8 @@ library(httr)
 # Assign from-and to stations to variables "A" and "B"  
 
 
-A = input$station_A
-B = inbut$station_B
+A = "Alkmaar"
+B = "Zaandam"
 
 # Url to retrive data from
 ns.url = as.character(paste("https://gateway.apiportal.ns.nl/public-prijsinformatie/prices?fromStation=",A,"&toStation=",B, sep = ""))
@@ -38,6 +38,7 @@ request.result = content( # conent() is a JSON parser - it will create a list() 
 ##########################################################
 
 single.fare = (request.result$priceOptions[[2]]$totalPrices[[1]]$price)/100
+traject.vrij = single.fare = (request.result$priceOptions[[2]]$totalPrices[[15]]$price)/100
 print(single.fare)
 
 
