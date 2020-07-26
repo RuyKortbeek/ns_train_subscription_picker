@@ -36,6 +36,8 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                 tabsetPanel(
                   tabPanel("Resultaten", icon = icon("chart-line"),
                            span(h2(textOutput("bestoption")),style="color:#336600"),
+                           span(h5(textOutput("costs")),style="black"),
+                           span(h5(textOutput("costs_40")),style="black"),
                            hr(),
                            fixedRow(
                            column(3,tableOutput("maintable")),
@@ -232,7 +234,7 @@ output$info = renderText(help_info)
 
 # Drop the "altijd vrij" subscription when the costs are out of range other subscriptions
 
-    if((number_days*2)*fare_value*1.5 < 351){
+    if((number_days*2)*fare_value*1.5 < always_free_value){
       df.long = df.long %>% filter(Abonnement != "Altijd_Vrij")
 
     }
@@ -287,8 +289,17 @@ output$info = renderText(help_info)
       renderText({
       paste("Voordeligste abonnement:",gsub("_", " ", df.sub[1,2]))
      })
+    
+    output$costs =
+      renderText({
+        paste("Enkele rit:", fare_value,"euro")
+      })
+    output$costs_40 =
+      renderText({
+        paste("40% korting:", round(fare_value*0.6, digits = 2), "euro")
+      })
+    
     }
-    print(df)
   })
 }
 shinyApp(ui = ui, server = server)
