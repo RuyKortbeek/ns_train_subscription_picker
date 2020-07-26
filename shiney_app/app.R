@@ -15,6 +15,10 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                               selectInput("station_B", label = "en", 
                                           choices = stations$Station,
                                           selected = "Aalten"),
+                              radioButtons("classInput", label = NULL,
+                                           choices = c("2e klas", "1e klas"),
+                                           selected = "2e klas",
+                                           inline = TRUE),
                               br(),
                               h4("Hoe vaak reis je?"),
                               sliderInput("traveldaysInput", "Aantal dagen per maand:", min = 1, max = 31, value = 1, step = 1, round = TRUE),
@@ -32,6 +36,8 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                 tabsetPanel(
                   tabPanel("Resultaten", icon = icon("chart-line"),
                            span(h2(textOutput("bestoption")),style="color:#336600"),
+                           span(h5(textOutput("costs")),style="black"),
+                           span(h5(textOutput("costs_40")),style="black"),
                            hr(),
                            fixedRow(
                            column(3,tableOutput("maintable")),
@@ -102,17 +108,40 @@ output$info = renderText(help_info)
     # Get data you want (price single fare without discount) #
     ##########################################################
     
+    # Price single fare
+    if (input$classInput == "2e klas"){
+      fare_value = as.numeric((request.result$priceOptions[[2]]$totalPrices[[1]]$price)/100) # 2nd class
+    } else{
+      fare_value = as.numeric((request.result$priceOptions[[2]]$totalPrices[[2]]$price)/100) # 1st class
+    }
+  
+    # Traject vrij
+    if (input$classInput == "2e klas"){
+    traject_fixed_value =  as.numeric((request.result$priceOptions[[2]]$totalPrices[[17]]$price)/100) # 2nd class This is the monthly price for a year - subscribtion
+    } else{
+      traject_fixed_value =  as.numeric((request.result$priceOptions[[2]]$totalPrices[[18]]$price)/100) # 1st class
+    }
     
-    fare_value = as.numeric((request.result$priceOptions[[2]]$totalPrices[[1]]$price)/100)
-
-
-    traject_fixed_value =  as.numeric((request.result$priceOptions[[2]]$totalPrices[[17]]$price)/100) # This is the monthly price for a year - subscribtion
-
+    # Altijd vrij
+    if (input$classInput == "2e klas"){
+      always_free_value = 351
+    } else{
+      always_free_value = 592
+    }
+    
+    # Start costs Dal vrij
+    if (input$classInput == "2e klas"){
+      dal_vrij_start =  105 # start cost are taken from www.ns.nl
+    } else{
+      dal_vrij_start =  133 # 1st class
+    } 
     
     number_days = as.numeric(input$traveldaysInput)
     
     off_peak_fares = as.numeric(input$offpeakInput)
+   
     
+# Set requirements for the input values to stop the App from bugging 
    req(fare_value > 1) # makes sure App does not bug when there is two times the same station as input
     
     if(!is.null(input$offpeakInput) & !is.null(input$traveldaysInput))  # makes sure df is not bugging when switching off-peak / travelsdays (during switch values becomes NULL)
@@ -131,23 +160,23 @@ output$info = renderText(help_info)
     Dal_Voordeel =
 
       if(off_peak_fares == ((number_days*2))){
-       5+ c(1:off_peak_fares*(fare_value*0.6))
+       4.67+ c(1:off_peak_fares*(fare_value*0.6))
       }
 
     else if(off_peak_fares == 0){
-       5+c(1:(number_days*2)*fare_value)
+       4.67 +c(1:(number_days*2)*fare_value)
     }
 
   else if(off_peak_fares != 0 & off_peak_fares != ((number_days*2))){
-     5+ c(
+     4.67 + c(
      c(1:((number_days*2)-off_peak_fares)*fare_value),  # costs during peak
 
       c(1:off_peak_fares*(fare_value*0.6) + ((number_days*2)-off_peak_fares)*fare_value) # cost during off peak + cost made during peak
      )
 
   }
-    
-  ,
+    ,
+  
   Altijd_Voordeel =
 
     if(off_peak_fares == ((number_days*2))){
@@ -155,11 +184,11 @@ output$info = renderText(help_info)
     }
 
    else if(off_peak_fares == 0){
-     dal_voordeel = 23+ c(1:(number_days*2)*fare_value*0.8)
+     23+ c(1:(number_days*2)*fare_value*0.8)
    }
 
    else if(off_peak_fares != 0 & off_peak_fares != ((number_days*2))){
-    23+ c(
+     23+ c(
        c(1:((number_days*2)-off_peak_fares)*fare_value*0.8),  # costs during peak
 
        c(1:off_peak_fares*(fare_value*0.6) + ((number_days*2)-off_peak_fares)*fare_value*0.8) # cost during off peak + cost made during peak
@@ -170,15 +199,15 @@ output$info = renderText(help_info)
  Dal_Vrij =
 
   if(off_peak_fares == ((number_days*2))){
-     105+c(1:off_peak_fares*(fare_value*0))
+     dal_vrij_start + c(1:off_peak_fares*(fare_value*0))
    }
 
  else if(off_peak_fares == 0){
-   dal_voordeel =  105+c(1:(number_days*2)*fare_value)
+     dal_vrij_start + c(1:(number_days*2)*fare_value)
  }
 
  else if(off_peak_fares != 0 & off_peak_fares != ((number_days*2))){
-   105+c(
+   dal_vrij_start + c(
      c(1:((number_days*2)-off_peak_fares)*fare_value),  # costs during peak
 
      c(1:off_peak_fares*(fare_value*0) + ((number_days*2)-off_peak_fares)*fare_value) # cost during off peak + cost made during peak
@@ -190,10 +219,7 @@ output$info = renderText(help_info)
  Traject_Vrij = rep(traject_fixed_value, each = (number_days*2))
  
  ,
- Dal_Vrij = rep(105, each = (number_days*2))
- 
- ,
- Altijd_Vrij = rep(351, each = (number_days*2))
+ Altijd_Vrij = rep(always_free_value, each = (number_days*2))
 
      )
 
@@ -208,7 +234,7 @@ output$info = renderText(help_info)
 
 # Drop the "altijd vrij" subscription when the costs are out of range other subscriptions
 
-    if((number_days*2)*fare_value*1.5 < 351){
+    if((number_days*2)*fare_value*1.5 < always_free_value){
       df.long = df.long %>% filter(Abonnement != "Altijd_Vrij")
 
     }
@@ -263,8 +289,17 @@ output$info = renderText(help_info)
       renderText({
       paste("Voordeligste abonnement:",gsub("_", " ", df.sub[1,2]))
      })
+    
+    output$costs =
+      renderText({
+        paste("Enkele rit:", fare_value,"euro")
+      })
+    output$costs_40 =
+      renderText({
+        paste("40% korting:", round(fare_value*0.6, digits = 2), "euro")
+      })
+    
     }
-    print(df)
   })
 }
 shinyApp(ui = ui, server = server)

@@ -1,4 +1,0 @@
-p(De help en informatie tekst komt hier
-
-Dit is slechts <b> een tekstbericht </b>
-)
