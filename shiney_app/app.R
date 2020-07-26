@@ -11,7 +11,7 @@ ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-a
                sidebarLayout( #Here comes all the things related to the left sidebar (input)
                  sidebarPanel(selectInput("station_A", label = "Ik reis tussen:", 
                                           choices = stations$Station,
-                                          selected = "Alkmaar"),
+                                          selected = "Aalten"),
                               selectInput("station_B", label = "en", 
                                           choices = stations$Station,
                                           selected = "Aalten"),
@@ -113,7 +113,7 @@ output$info = renderText(help_info)
     
     off_peak_fares = as.numeric(input$offpeakInput)
     
-  # req(fare_value) # makes sure App does not bug when cost inpout is left empty
+   req(fare_value > 1) # makes sure App does not bug when there is two times the same station as input
     
     if(!is.null(input$offpeakInput) & !is.null(input$traveldaysInput))  # makes sure df is not bugging when switching off-peak / travelsdays (during switch values becomes NULL)
       {
