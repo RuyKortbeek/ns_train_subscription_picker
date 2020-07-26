@@ -1,11 +1,17 @@
 library(httr)
 
-###############################
-# Input data for http request #
-###############################
+#####################################
+# Input data for http PRICE request #
+#####################################
+
+# Assign from-and to stations to variables "A" and "B"  
+
+
+A = "Alkmaar"
+B = "Zaandam"
 
 # Url to retrive data from
-ns.url = as.character("https://gateway.apiportal.ns.nl/public-prijsinformatie/prices?fromStation=Zaandam&toStation=Alkmaar")
+ns.url = as.character(paste("https://gateway.apiportal.ns.nl/public-prijsinformatie/prices?fromStation=",A,"&toStation=",B, sep = ""))
 
 # Ocp-Apim-Subscription-Key -> should be in header pirmaire sleutel
 sub.key = as.character("92fd805f312b4907840fa436a2af87df")
@@ -32,4 +38,8 @@ request.result = content( # conent() is a JSON parser - it will create a list() 
 ##########################################################
 
 single.fare = (request.result$priceOptions[[2]]$totalPrices[[1]]$price)/100
+traject.vrij = single.fare = (request.result$priceOptions[[2]]$totalPrices[[15]]$price)/100
 print(single.fare)
+
+
+
