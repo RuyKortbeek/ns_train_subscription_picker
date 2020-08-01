@@ -1,0 +1,9 @@
+NS train subscription picker vragen questionaire vragen:
+
+- Hoe duidelijk was de input voor je?
+- Hoe duidelijk waren de resultaten voor je?
+- OPEN: Dit was niet duidelijk voor mij:
+- Ik denk dat deze tool iets toevoegt aan wat er nog niet is 
+- Ik zou dit aanbevelen aan een vriend of familielid
+- Optioneel: dit mist ik nog aan de tool
+- Optioneel: algemene indruk en verbeterpunten
