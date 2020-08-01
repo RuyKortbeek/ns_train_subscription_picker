@@ -7,7 +7,11 @@ library(httr)
 stations = read.csv(file = "NS_Stations_2019.csv", header = TRUE, stringsAsFactors = TRUE) %>% 
   filter(Land == "Netherlands") %>% select(Station, Code) %>% distinct() %>% arrange(Station)
 
-ui = fluidPage(titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-abonnement calculator"),
+ui = fluidPage(
+  
+  HTML('<meta name="viewport" content="width=1024">'), # Makes the app mobile-phone friendly
+  
+  titlePanel("Dé NS-abonnement calculator", windowTitle = "De NS-abonnement calculator"),
                sidebarLayout( #Here comes all the things related to the left sidebar (input)
                  sidebarPanel(selectInput("station_A", label = "Ik reis tussen:", 
                                           choices = stations$Station,
