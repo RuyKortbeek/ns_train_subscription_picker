@@ -1,0 +1,12 @@
+name: NS-abonnement-calculator
+title: NS-abonnement-calculator
+username:
+account: ruykortbeek
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2633395
+bundleId: 3463305
+url: https://ruykortbeek.shinyapps.io/NS-abonnement-calculator/
+when: 1596301911.29519
+asMultiple: FALSE
+asStatic: FALSE
