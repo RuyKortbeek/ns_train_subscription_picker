@@ -269,6 +269,7 @@ output$info = renderText(help_info)
     ggplot(df.long, aes(x = 31)) +
     geom_line(aes(x = rit/2, y = Euro, colour = Abonnement), size = 3)+
       scale_x_continuous(breaks = seq(1, number_days, by = 1)) +
+      scale_fill_hue(l =45) +
       labs(title = "Opbouw van de maandelijkse kosten per abonnement",
            x = "Dagen dat je reist",
            y = "Totale kosten in Euro's")+
