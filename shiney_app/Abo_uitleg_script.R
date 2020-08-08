@@ -37,8 +37,9 @@ p(h2(em("Basis")),
   
   h2(em("Traject Vrij")),
   h4("- Kosten: afhankelijk van gekozen traject en klasse", br(),
-     "- De maandelijkste kosten zijn gebaseerd een abonnementslooptijd van een jaar.
-       Een trajectabonnement afsluiten voor 1 maand is 25 % duurder", br(),
+     "- De maandelijkste kosten zijn gebaseerd op een jaarabonnement.
+       Een trajectabonnement afsluiten voor 1 maand is 25 % duurder. Wil een maandabonnement?", br(),
+     " Vermenigvuldig dan het bedrag dat uit de rekentool komt met 1.25.", br(),
      "- Onbeperkt reizen op een vast traject",br(),
       "- 40% korting buiten de spits op andere trajecten",br(),
       "- 40% korting voor 3 medereizigers")
