@@ -80,13 +80,14 @@ output$info = renderText(help_info)
 
 
 # Observe allows us to fetch the input data
+
   observe({
     
      code_station_A = (stations %>% filter(Station == input$station_A))[,2]
      code_station_B = (stations %>% filter(Station == input$station_B))[,2]
     
     # Url to retrive data from
-    ns.url = as.character(paste("https://gateway.apiportal.ns.nl/public-prijsinformatie/prices?fromStation=",code_station_A,"&toStation=",code_station_B, sep = ""))
+    ns.url = as.character(paste0("https://gateway.apiportal.ns.nl/public-prijsinformatie/prices?fromStation=",code_station_A,"&toStation=",code_station_B, sep = ""))
     
     # Ocp-Apim-Subscription-Key -> should be in header pirmaire sleutel
     sub.key = as.character("92fd805f312b4907840fa436a2af87df")
@@ -112,32 +113,34 @@ output$info = renderText(help_info)
     # Get data you want (price single fare without discount) #
     ##########################################################
     
+    if (is.list(request.result) == TRUE){
     # Price single fare
     if (input$classInput == "2e klas"){
-      fare_value = as.numeric((request.result$priceOptions[[2]]$totalPrices[[1]]$price)/100) # 2nd class
+      fare_value = request.result$priceOptions[[2]]$totalPrices[[1]]$price/100 # 2nd class
     } else{
       fare_value = as.numeric((request.result$priceOptions[[2]]$totalPrices[[2]]$price)/100) # 1st class
     }
   
     # Traject vrij
     if (input$classInput == "2e klas"){
-    traject_fixed_value =  as.numeric((request.result$priceOptions[[2]]$totalPrices[[17]]$price)/100) # 2nd class This is the monthly price for a year - subscribtion
+    traject_fixed_value = as.numeric((request.result$priceOptions[[2]]$totalPrices[[17]]$price)/100) # 2nd class This is the monthly price for a year - subscribtion
     } else{
       traject_fixed_value =  as.numeric((request.result$priceOptions[[2]]$totalPrices[[18]]$price)/100) # 1st class
+    }
     }
     
     # Altijd vrij
     if (input$classInput == "2e klas"){
-      always_free_value = 351
+      always_free_value = 362.4
     } else{
-      always_free_value = 592
+      always_free_value = 512.5
     }
     
     # Start costs Dal vrij
     if (input$classInput == "2e klas"){
-      dal_vrij_start =  105 # start cost are taken from www.ns.nl
+      dal_vrij_start =  107.9 # start cost are taken from www.ns.nl
     } else{
-      dal_vrij_start =  133 # 1st class
+      dal_vrij_start =  136.4 # 1st class
     } 
     
     number_days = as.numeric(input$traveldaysInput)
@@ -164,15 +167,15 @@ output$info = renderText(help_info)
     Dal_Voordeel =
 
       if(off_peak_fares == ((number_days*2))){
-       4.67+ c(1:off_peak_fares*(fare_value*0.6))
+       5.1+ c(1:off_peak_fares*(fare_value*0.6))
       }
 
     else if(off_peak_fares == 0){
-       4.67 +c(1:(number_days*2)*fare_value)
+       5.1 +c(1:(number_days*2)*fare_value)
     }
 
   else if(off_peak_fares != 0 & off_peak_fares != ((number_days*2))){
-     4.67 + c(
+     5.1 + c(
      c(1:((number_days*2)-off_peak_fares)*fare_value),  # costs during peak
 
       c(1:off_peak_fares*(fare_value*0.6) + ((number_days*2)-off_peak_fares)*fare_value) # cost during off peak + cost made during peak
@@ -184,15 +187,15 @@ output$info = renderText(help_info)
   Altijd_Voordeel =
 
     if(off_peak_fares == ((number_days*2))){
-     23+ c(1:off_peak_fares*(fare_value*0.6))
+     24.2+ c(1:off_peak_fares*(fare_value*0.6))
     }
 
    else if(off_peak_fares == 0){
-     23+ c(1:(number_days*2)*fare_value*0.8)
+     24.2+ c(1:(number_days*2)*fare_value*0.8)
    }
 
    else if(off_peak_fares != 0 & off_peak_fares != ((number_days*2))){
-     23+ c(
+     24.2+ c(
        c(1:((number_days*2)-off_peak_fares)*fare_value*0.8),  # costs during peak
 
        c(1:off_peak_fares*(fare_value*0.6) + ((number_days*2)-off_peak_fares)*fare_value*0.8) # cost during off peak + cost made during peak

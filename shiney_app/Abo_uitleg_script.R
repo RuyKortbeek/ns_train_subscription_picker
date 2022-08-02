@@ -7,7 +7,7 @@ p(h2(em("Basis")),
 
   
   h2(em("Dal Voordeel")),
-  h4("- Kosten: 4.67 euro / maand", br(),
+  h4("- Kosten: 5.10 euro / maand", br(),
     "- 40% korting in het weekend",br(),
      "- 40% korting buiten de spits",br(),
      "- 40% korting op feestdagen",br(),
@@ -15,7 +15,7 @@ p(h2(em("Basis")),
 
   
   h2(em("Altijd Voordeel")),
-  h4("- Kosten: 23 euro / maand", br(),
+  h4("- Kosten: 24.20 euro / maand", br(),
     "- 20% korting in de spits",br(),
      "- 40% korting in het weekend",br(),
      "- 40% korting buiten de spits",br(),
@@ -24,13 +24,13 @@ p(h2(em("Basis")),
 
   
   h2(em("Dal Vrij")),
-  h4("- Kosten: 105 euro / maand (2e klas) of 133 euro / maand (1e klas)", br(),
+  h4("- Kosten: 107.90 euro / maand (2e klas) of 136.40 euro / maand (1e klas)", br(),
     "- Onbeperkt reizen met de trein buiten de spits",br(),
       "- 40% korting voor 3 medereizigers buiten de spits"),
  
   
   h2(em("Altijd Vrij")),
-  h4("- Kosen: 351 euro / maand (2e klas) of 592 euro / maand (1e klas)", br(),
+  h4("- Kosen: 362.40 euro / maand (2e klas) of 612.50 euro / maand (1e klas)", br(),
     "- Onbeperkt reizen met de trein",br(),
     "- 40% korting voor 3 medereizigers buiten de spits"),
 
